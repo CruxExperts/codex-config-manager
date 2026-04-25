@@ -1,0 +1,10 @@
+provider_id: openrouter-demo
+provider_name: OpenRouter Demo
+base_url: https://openrouter.ai/api/v1
+wire_api: responses
+env_key: OPENROUTER_API_KEY
+profiles:
+  openrouter-gpt4o-mini: openai/gpt-4o-mini
+  openrouter-claude-sonnet: anthropic/claude-3.5-sonnet
+default_profile: openrouter-gpt4o-mini
+prompt_api_key: OPENROUTER_API_KEY

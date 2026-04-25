@@ -1,0 +1,29 @@
+name: docs-sync
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify required docs exist
+        run: |
+          test -f README.md
+          test -f CHANGELOG.md
+          test -f docs/context.md
+      - name: Validate doc sync for changed files
+        run: |
+          EMPTY_TREE=$(git hash-object -t tree /dev/null)
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            python3 scripts/check_docs_sync.py --mode range --base-ref HEAD~1
+          else
+            python3 scripts/check_docs_sync.py --mode range --base-ref "$EMPTY_TREE"
+          fi
